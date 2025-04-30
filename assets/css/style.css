@@ -14,6 +14,21 @@
   border: 6px solid rgba(0, 77, 64, 0.4); 
   border-radius: 50% !important;
 }
+/* Dark-themed background for Experience section */
+.dark-experience {
+  background: url("ebg.jpg") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* Keep experience cards white with good shadow */
+.dark-experience .card {
+  background-color: #ffffff !important;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
 
 .profile-pic img {
   width: 100%;
