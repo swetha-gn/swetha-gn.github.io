@@ -16,7 +16,7 @@
 }
 /* Dark-themed background for Experience section */
 .dark-experience {
-  background: url("ebg.jpg") no-repeat center center;
+  background: url("assets/img/ebg.jpg") no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   padding-top: 50px;
