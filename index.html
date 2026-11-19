@@ -56,7 +56,7 @@ a{color:inherit}
 .portrait figcaption{position:absolute;left:50%;bottom:-46px;transform:translateX(-50%);white-space:nowrap;font-style:italic;font-weight:500;font-size:17px;color:var(--dim);font-variation-settings:"wdth" 100}
 @keyframes spin{to{transform:rotate(1turn)}}
 .onward{margin:10vh 0 4vh;font-style:italic;font-weight:300;font-size:clamp(34px,5vw,72px);letter-spacing:.02em;line-height:1.1;font-variation-settings:"wdth" 110;background:linear-gradient(90deg,var(--ink),var(--m2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.statement p{margin:0;font-weight:600;font-size:clamp(30px,4.3vw,64px);line-height:1.12;letter-spacing:-.02em;font-variation-settings:"wdth" 92;max-width:22ch}
+.statement p{margin:0;font-weight:600;font-size:clamp(28px,3.7vw,54px);line-height:1.12;letter-spacing:-.02em;font-variation-settings:"wdth" 92;max-width:22ch}
 .statement .w{color:rgba(238,240,246,.16);transition:color .2s}
 .statement .w.lit{color:var(--ink)}
 .statement .w.hot{color:var(--m2)}
@@ -81,7 +81,7 @@ a{color:inherit}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:56px;flex-wrap:wrap}
 .sec-h h2{margin:0;font-weight:800;font-size:clamp(40px,6vw,88px);line-height:.95;letter-spacing:-.03em;font-variation-settings:"wdth" 112}
 .sec-h p{margin:0;color:var(--dim);max-width:40ch}
-.cards{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto;gap:18px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .card{position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:34px;overflow:hidden;isolation:isolate}
 .card::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--x,50%) var(--y,50%),rgba(252,137,97,.16),transparent 60%);opacity:0;transition:opacity .3s;z-index:-1}
 .card:hover::before{opacity:1}
@@ -89,8 +89,9 @@ a{color:inherit}
 .card p{margin:0;color:#C3C9D8;font-size:17px;max-width:52ch}
 .card .tagline{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
 .card .tagline span{font-size:13px;font-weight:500;padding:5px 12px;border-radius:99px;border:1px solid var(--line);color:#D3D8E5}
-.card.big{grid-row:span 2;display:flex;flex-direction:column}
-.card.big .viz{margin-top:auto;padding-top:28px}
+.card{display:flex;flex-direction:column}.card.big{grid-row:auto}.card.next{grid-column:1/-1}
+.card.big .viz{margin-top:auto;padding-top:24px}
+.card .mini{margin-top:auto}.card p+.mini{margin-top:22px}
 .card.next{background:linear-gradient(140deg,#2A1438,#0E1830 65%)}
 /* quantization demo inside card */
 .qcanvas{width:100%;height:190px;display:block;border-radius:14px;background:#0A1226}
@@ -100,6 +101,10 @@ a{color:inherit}
 .qctrl output{font-weight:800;font-size:28px;font-variation-settings:"wdth" 75;min-width:2.4ch;text-align:right;color:var(--m2)}
 .qstats{display:flex;gap:28px;margin-top:10px;font-size:14px;color:var(--dim)}
 .qstats b{color:var(--ink);font-size:18px;margin-right:4px}
+.mini{width:100%;height:178px;display:block;border-radius:14px;background:#0A1226;margin-top:22px}
+.pwh{display:grid;grid-template-columns:62px 1fr;gap:10px 18px;margin:14px 0 0;font-size:17px;color:#C3C9D8}
+.pwh dt{color:var(--m2);font-weight:700;font-size:15px;padding-top:2px}
+.pwh dd{margin:0}
 /* ---------- experience ---------- */
 .exp{padding:14vh 0 8vh;overflow-x:clip}
 .tl{position:relative;padding-left:56px}
@@ -210,7 +215,7 @@ a{color:inherit}
 </section>
 <main id="main">
 <section class="statement wrap" aria-label="About">
-<p id="stmt">A TCAD simulation can take hours to tell you where a chip will crack. I train neural networks that answer in milliseconds, and shrink models until they fit on photonic hardware. Machine learning that respects physics, not just accuracy.</p>
+<p id="stmt">A high-fidelity TCAD simulation resolves the stress inside a semiconductor device, but each run costs hours. I train neural surrogates on that simulation data to predict the same fields in milliseconds, with uncertainty estimates, and compress networks to run on photonic hardware. Physics-faithful machine learning that engineers can design with.</p>
 <figure class="portrait"><div class="ph"><img src="assets/img/CC13D7DF-8134-4FF6-8760-35ADC752B425.JPG" alt="Portrait of Swetha Gendlur Nagarajan, smiling" width="1179" height="2096"></div><figcaption>That's me, Swetha.</figcaption></figure>
 </section>
 <section class="speed wrap" aria-labelledby="speed-h">
@@ -240,12 +245,14 @@ a{color:inherit}
 </article>
 <article class="card">
 <h3>Digital twins &amp; surrogate models</h3>
-<p>Fast models trained on physics simulations that predict stress, performance and reliability in semiconductor and photonic devices, for design and manufacturing decisions.</p>
+<p>Neural surrogates trained on TCAD process-simulation data that predict mechanical stress across device designs in milliseconds. A deep ensemble attaches an uncertainty to every prediction, flagging when to fall back to the full simulation.</p>
+<canvas class="mini" id="sur" aria-label="Animation: a TCAD solver slowly fills in one stress map while the neural surrogate produces a new stress map for a different design every moment." role="img"></canvas>
 <div class="tagline"><span>Surrogate ML</span><span>TCAD</span><span>Uncertainty</span></div>
 </article>
 <article class="card next">
 <h3>Next: physics-informed models</h3>
-<p>Neural networks that build in physical laws, multi-physics links across stress, thermal and optical domains, and extending to photonic waveguides, resonators and integrated circuits.</p>
+<p>Physics-informed neural networks put the governing equations into the training loss, so predictions stay physically consistent with less simulation data. Next steps: coupling stress, thermal and optical physics, and extending to waveguides, resonators and photonic ICs.</p>
+<canvas class="mini" id="pinn" aria-label="Animation: a physics-informed network trains; its predicted field goes from noise to a smooth solution as data loss and physics residual fall." role="img"></canvas>
 <div class="tagline"><span>PINNs</span><span>Multi-physics</span><span>Silicon photonics</span></div>
 </article>
 </div>
@@ -257,45 +264,36 @@ a{color:inherit}
 <div class="job">
 <div class="when"><b>University of Florida</b>Aug 2026 – now</div>
 <div><h3>Graduate Research Assistant, Photonics Group</h3>
-<ul><li>PhD research with Dr. Volker Sorger on machine learning for photonic and semiconductor systems.</li></ul></div>
+<dl class="pwh"><dt>Why</dt><dd>Simulation-heavy design of semiconductor and photonic devices is slow; ML can make it interactive if the models respect the physics.</dd><dt>What</dt><dd>PhD research with Dr. Volker Sorger on physics-informed digital twins for semiconductor and photonic systems.</dd><dt>How</dt><dd>Extending my stress surrogates toward physics-informed neural networks and multi-physics models spanning stress, thermal and optical behavior.</dd></dl></div>
 </div>
 <div class="job">
 <div class="when"><b>LiteSeeker Solutions</b>Aug 2025 – Apr 2026</div>
 <div><h3>Machine Learning Engineer</h3>
-<ul>
-<li>Built an end-to-end predictive maintenance pipeline with lifetime forecasting (L70/L90) to catch lighting-fixture degradation early.</li>
-<li>Estimated remaining useful life with XGBoost, random forest and linear models.</li>
-<li>Designed diagnostic dashboards (degradation curves, predicted failure dates, fixture health) for sponsor reviews.</li>
-</ul></div>
+<dl class="pwh"><dt>Why</dt><dd>Lighting fixtures dim gradually before they fail; spotting that early lets maintenance be planned instead of reactive.</dd><dt>What</dt><dd>An end-to-end predictive-maintenance pipeline that forecasts fixture lifetime (L70/L90) and remaining useful life.</dd><dt>How</dt><dd>Cleaned and engineered features from lumen data, analyzed tapering trends, compared XGBoost, random forest and linear baselines on weighted accuracy and domain-aligned error metrics, and built dashboards of degradation curves and predicted failure dates for sponsor reviews.</dd></dl></div>
 </div>
 <div class="job">
 <div class="when"><b>Florida Semiconductor Institute</b>Oct 2024 – Apr 2026</div>
 <div><h3>Research Assistant, Sorger Team</h3>
-<ul>
-<li>Developed ML digital twins that predict stress, performance and reliability in semiconductor and photonic systems.</li>
-<li>Turned slow physics simulations into fast surrogate models, presented at SPIE Photonics West 2026.</li>
-<li>Optimized deep-learning models to cut compute, memory and latency on next-generation AI accelerators.</li>
-</ul></div>
+<dl class="pwh"><dt>Why</dt><dd>A single TCAD run can take hours, which makes exploring device designs slow and expensive.</dd><dt>What</dt><dd>A neural digital twin that predicts mechanical stress in semiconductor devices about 3000× faster than TCAD, presented at SPIE Photonics West 2026; plus hardware-aware optimization of deep-learning models.</dd><dt>How</dt><dd>Trained surrogates on TCAD/FLOOPS simulation data from designed experiments (Latin hypercube sampling), used a deep ensemble to quantify prediction uncertainty, and quantized networks to INT8/INT6 with hardware-in-the-loop testing on accelerator constraints.</dd></dl></div>
 </div>
 <div class="job">
 <div class="when"><b>Optum</b>Jan 2024 – Jul 2024</div>
 <div><h3>Machine Learning Engineer (TDP II)</h3>
-<ul>
-<li>Built clinical NLP models that raised ICD/CPT code-mapping accuracy to 92.8%.</li>
-<li>Customized a RAG system with LoRA-tuned models and a FAISS knowledge base, cutting chatbot hallucinations by 15%.</li>
-</ul></div>
+<dl class="pwh"><dt>Why</dt><dd>Mismatches between clinical text and billing codes, and chatbots that invent answers, both cost time and trust in healthcare.</dd><dt>What</dt><dd>Clinical NLP models that map diagnoses to ICD/CPT codes at 92.8% accuracy, and a RAG chatbot with 15% fewer hallucinations.</dd><dt>How</dt><dd>Cleaned and aligned 1M+ patient records in Spark, trained TF-IDF and XGBoost models, and grounded LoRA-tuned Hugging Face models in a FAISS knowledge base of 2M+ records.</dd></dl></div>
 </div>
 <div class="job small">
 <div class="when"><b>IBM</b>Aug 2022 – Dec 2022</div>
-<div><h3>Student Trainee</h3><ul><li>Trained a neural network on MNIST and shipped a Flask web app that reads uploaded handwritten digits, on IBM Cloud and Watson Studio.</li></ul></div>
+<div><h3>Student Trainee</h3>
+<dl class="pwh"><dt>Why</dt><dd>To learn how a deep-learning model goes from notebook to a working product.</dd><dt>What</dt><dd>A web app that recognizes uploaded handwritten digits.</dd><dt>How</dt><dd>Trained a neural network on MNIST and deployed it with Flask on IBM Cloud, Watson Studio and Cloudant DB.</dd></dl></div>
 </div>
 <div class="job small">
 <div class="when"><b>Ugam</b>Mar 2022 – Jun 2022</div>
-<div><h3>Project Trainee</h3><ul><li>Built an image caption generator and published a research paper on it.</li></ul></div>
+<div><h3>Project Trainee</h3>
+<dl class="pwh"><dt>Why</dt><dd>Describing images automatically makes visual content searchable and accessible.</dd><dt>What</dt><dd>An image caption generator, published as a research paper.</dd><dt>How</dt><dd>Combined a ResNet-50 image encoder with an LSTM decoder and spatial attention.</dd></dl></div>
 </div>
 <div class="job small">
 <div class="when"><b>Cisco thingQbator</b>Jun 2021 – Dec 2021</div>
-<div><h3>Project Associate</h3><ul><li>Built a Flutter and Python project in Cisco's student innovation program.</li></ul></div>
+<div><h3>Project Associate</h3><dl class="pwh"><dt>What</dt><dd>Built a Flutter and Python project in Cisco's student innovation program.</dd></dl></div>
 </div>
 </div>
 </section>
@@ -453,6 +451,63 @@ const grad=g.createLinearGradient(0,0,W,0);grad.addColorStop(0,"#B73779");grad.a
 g.strokeStyle=grad;g.lineWidth=2.5;g.beginPath();let pv=null,e=0;ys.forEach((v,i)=>{const qv=q(v);e+=Math.abs(qv-v);if(!i)g.moveTo(X(i),Y(qv));else{if(qv!==pv)g.lineTo(X(i),Y(pv));g.lineTo(X(i),Y(qv));}pv=qv;});g.stroke();
 document.getElementById("bo").value=b;document.getElementById("s1").textContent=L;document.getElementById("s2").textContent=(32/b).toFixed(32%b?1:0)+"×";document.getElementById("s3").textContent=(100*e/N/(hi-lo)).toFixed(1)+"%";}
 r.addEventListener("input",draw);addEventListener("resize",draw);draw();})();
+/* research mini animations */
+(()=>{
+const vis=new Map();const io=new IntersectionObserver(es=>es.forEach(e=>vis.set(e.target,e.isIntersecting)));
+function setup(c){const g=c.getContext("2d");const fit=()=>{const d=Math.min(devicePixelRatio||1,2);c.width=c.clientWidth*d;c.height=c.clientHeight*d;g.setTransform(d,0,0,d,0,0);};fit();addEventListener("resize",fit);io.observe(c);return g;}
+const sur=document.getElementById("sur"),pin=document.getElementById("pinn");
+const gs=setup(sur),gp=setup(pin);
+const col=v=>{const c=LUT[Math.max(0,Math.min(255,(v*255)|0))];return `rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;};
+const label=(g,t,x,y,a="left",c="#C3C9D8")=>{g.font="600 12px Archivo, system-ui, sans-serif";g.fillStyle=c;g.textAlign=a;g.fillText(t,x,y);};
+function stress(u,v,p){const cx=.5,w=.17+.07*Math.sin(p),top=.45;
+  if(Math.abs(u-cx)<w&&v<top)return .12+.25*(top-v);
+  let s=.06;for(const sx of[-1,1]){const dx=u-(cx+sx*w),dy=v-top;s+=.95*Math.exp(-(dx*dx+dy*dy)/(.011+.004*Math.cos(p*1.3)));}
+  s+=.3*Math.exp(-((v-.9)**2)/.015);return Math.min(1,s);}
+function net(g,x0,y0,W,H,layers,phase,on){
+  const pts=layers.map((n,i)=>[...Array(n)].map((_,j)=>[x0+i*W/(layers.length-1),y0+(j+.5)*H/n]));
+  g.lineWidth=1;
+  for(let i=0;i<pts.length-1;i++)for(const a of pts[i])for(const b of pts[i+1]){g.strokeStyle="rgba(238,240,246,.10)";g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();}
+  if(on){const L=pts.length-1,f=phase*L,i=Math.min(L-1,Math.floor(f)),k=f-i;
+    for(const a of pts[i])for(const b of pts[i+1]){g.fillStyle="rgba(254,176,120,.85)";g.beginPath();g.arc(a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,1.6,0,7);g.fill();}}
+  pts.forEach((l,i)=>l.forEach(p=>{g.fillStyle=i===0||i===pts.length-1?"#FEB078":"#B73779";g.beginPath();g.arc(p[0],p[1],4,0,7);g.fill();}));
+  return pts;}
+function drawSur(t){const g=gs,W=sur.clientWidth,H=sur.clientHeight;g.clearRect(0,0,W,H);
+  const T=7,cyc=Math.floor(t/T),lt=t%T,nx=22,ny=13,half=W*.47;
+  const x0=12,y0=26,fw=half-24,fh=H-46,cw=fw/nx,ch=fh/ny;
+  const rev=Math.min(nx*ny,Math.floor(lt/(T*.92)*nx*ny));
+  for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const k=j*nx+i;g.fillStyle=k<rev?col(stress((i+.5)/nx,(j+.5)/ny,cyc*.9)):"#121B33";g.fillRect(x0+i*cw,y0+j*ch,cw+.4,ch+.4);}
+  g.strokeStyle="rgba(9,16,31,.55)";g.lineWidth=.6;g.beginPath();
+  for(let i=0;i<=nx;i++){g.moveTo(x0+i*cw,y0);g.lineTo(x0+i*cw,y0+fh);}for(let j=0;j<=ny;j++){g.moveTo(x0,y0+j*ch);g.lineTo(x0+fw,y0+j*ch);}g.stroke();
+  label(g,"TCAD solver",x0,16,"left","#EEF0F6");
+  const sm=W<480;label(g,rev<nx*ny?(sm?`solving ${Math.round(rev/(nx*ny)*100)}%`:`meshing + solving… ${Math.round(rev/(nx*ny)*100)}%`):"1 design done",x0,H-6);
+  // surrogate
+  const rx=half+8,step=.85,d=Math.floor(t/step),ph=(t%step)/step;
+  label(g,sm?"Surrogate":"Neural surrogate",rx,16,"left","#EEF0F6");
+  net(g,rx+6,y0+6,W*.17,fh-12,[3,5,5,1],Math.min(1,ph/.35),ph<.35);
+  const sx=rx+W*.17+26,sw=W-sx-12,sh=fh,snx=16,sny=Math.round(16*sh/sw);
+  for(let j=0;j<sny;j++)for(let i=0;i<snx;i++){g.fillStyle=col(stress((i+.5)/snx,(j+.5)/sny,d*1.7));g.fillRect(sx+i*sw/snx,y0+j*sh/sny,sw/snx+.4,sh/sny+.4);}
+  g.strokeStyle="rgba(254,176,120,"+(ph<.35?(1-ph/.35)*.9:0)+")";g.lineWidth=2;g.strokeRect(sx,y0,sw,sh);
+  label(g,sm?`${d%1000} designs`:`${d%1000} designs, milliseconds each`,rx,H-6);}
+function drawPinn(t){const g=gp,W=pin.clientWidth,H=pin.clientHeight;g.clearRect(0,0,W,H);
+  const T=8,e=Math.min(1,(t%T)/(T*.85)),prog=1-Math.exp(-4.2*e),phys=Math.exp(-3*e);
+  const y0=26,nh=H-(W>620?40:66);
+  label(g,"Network u(x, y)",12,16,"left","#EEF0F6");
+  const pts=net(g,22,y0,W*.30,nh,[2,4,4,4,1],(t*1.4)%1,true);
+  label(g,"x",10,pts[0][0][1]+4,"left");label(g,"y",10,pts[0][1][1]+4,"left");
+  const wide=W>620,fx=W*.30+56,fw=wide?Math.min(W-fx-250,nh*2.6):W-fx-12,fnx=wide?26:20,fny=Math.max(8,Math.round(fnx*nh/fw));
+  label(g,`${W<480?"Field":"Predicted field"}, epoch ${Math.round(e*5000)}`,fx,16,"left","#EEF0F6");
+  for(let j=0;j<fny;j++)for(let i=0;i<fnx;i++){const u=(i+.5)/fnx,v=(j+.5)/fny;
+    const target=.12+.8*Math.sin(Math.PI*u)*Math.exp(-2.2*v);
+    const noise=(Math.sin(i*12.9898+j*78.233)*43758.5453)%1;
+    g.fillStyle=col(target*prog+Math.abs(noise)*(1-prog));g.fillRect(fx+i*fw/fnx,y0+j*nh/fny,fw/fnx+.4,nh/fny+.4);}
+  const L=[["Data loss",1-prog,"#FC8961"],["Physics residual",phys,"#B73779"]];
+  if(wide){const lx=fx+fw+28,lw=W-lx-16;label(g,"Training loss",lx,16,"left","#EEF0F6");
+    L.forEach(([n,v,c],k)=>{const y=y0+18+k*46;label(g,n,lx,y,"left");label(g,v.toFixed(3),lx+lw,y,"right","#EEF0F6");g.fillStyle="rgba(255,255,255,.07)";g.fillRect(lx,y+8,lw,8);g.fillStyle=c;g.fillRect(lx,y+8,Math.max(2,lw*v),8);});}
+  else{const by=H-30,bw=W-24-120;L.forEach(([n,v,c],k)=>{const y=by+k*15;label(g,n,12,y+8,"left");g.fillStyle="rgba(255,255,255,.07)";g.fillRect(120,y,bw,7);g.fillStyle=c;g.fillRect(120,y,Math.max(2,bw*v),7);});}}
+if(reduce){drawSur(6.9);drawPinn(7);return;}
+const t0=performance.now();
+(function loop(now){const t=(now-t0)/1000;if(vis.get(sur))drawSur(t);if(vis.get(pin))drawPinn(t);requestAnimationFrame(loop);})(t0);
+})();
 /* card spotlight */
 document.querySelectorAll(".card").forEach(c=>c.addEventListener("pointermove",e=>{const r=c.getBoundingClientRect();c.style.setProperty("--x",e.clientX-r.left+"px");c.style.setProperty("--y",e.clientY-r.top+"px");}));
 /* project art: digit + network */
@@ -463,7 +518,7 @@ for(let k=0;k<3;k++){const cx=110+k*110,cy=150+(k%2?-40:40);for(let m=0;m<7;m++)
 let e="";pts.forEach((a,i)=>pts.forEach((b,j)=>{if(j>i&&(a[2]===b[2]?R()<.45:R()<.04))e+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="rgba(238,240,246,.18)"/>`;}));
 const col=["#721F81","#E3466E","#FEB078"];pts.forEach(p=>e+=`<circle class="nd" cx="${p[0]}" cy="${p[1]}" r="${4+R()*5}" fill="${col[p[2]]}"/>`);n.insertAdjacentHTML("beforeend",e);})();
 /* statement: split words */
-const st=document.getElementById("stmt");const hot=new Set(["hours","milliseconds","photonic","physics,"]);
+const st=document.getElementById("stmt");const hot=new Set(["hours.","milliseconds,","uncertainty","photonic"]);
 st.innerHTML=st.textContent.trim().split(/\s+/).map(w=>`<span class="w${hot.has(w.toLowerCase())?" h":""}">${w}</span>`).join(" ");
 const words=[...st.querySelectorAll(".w")];
 /* race */
