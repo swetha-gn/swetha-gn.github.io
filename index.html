@@ -581,5 +581,95 @@ ScrollTrigger.create({trigger:".contact",start:"top bottom",end:"bottom top",onU
 addEventListener("load",()=>ScrollTrigger.refresh());
 })();
 </script>
+<style>
+#cb-btn{position:fixed;right:22px;bottom:22px;z-index:70;width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;background:conic-gradient(from 200deg,#721F81,#E3466E,#FEB078,#FCFDBF,#721F81);box-shadow:0 10px 30px rgba(227,70,110,.35);display:grid;place-items:center;transition:transform .25s}
+#cb-btn:hover{transform:scale(1.06)}
+#cb-btn span{width:54px;height:54px;border-radius:50%;background:#0E1830;display:grid;place-items:center}
+#cb-btn svg{width:26px;height:26px}
+#cb-btn .dot{position:absolute;right:4px;top:4px;width:12px;height:12px;border-radius:50%;background:#FEB078;border:2px solid #09101F}
+#cb-btn[aria-expanded="true"] .dot{display:none}
+#cb-tip{position:fixed;right:22px;bottom:96px;z-index:70;background:#EEF0F6;color:#09101F;font:600 14px var(--f);padding:9px 14px;border-radius:14px 14px 4px 14px;max-width:260px;box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s;pointer-events:none}
+#cb-tip.show{opacity:1;transform:none}
+#cb{position:fixed;right:22px;bottom:96px;z-index:70;width:min(380px,calc(100vw - 32px));height:min(560px,calc(100vh - 130px));display:flex;flex-direction:column;background:#0E1830;border:1px solid rgba(238,240,246,.14);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.5);overflow:hidden;transform-origin:100% 100%;transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s}
+#cb[hidden]{display:flex;opacity:0;transform:scale(.85) translateY(20px);pointer-events:none;visibility:hidden}
+#cb header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(238,240,246,.1);background:linear-gradient(120deg,#2A1438,#0E1830 70%)}
+#cb header .av{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FCFDBF,#FC8961 40%,#B73779 75%,#2A1438);flex:none}
+#cb header b{display:block;font:700 16px var(--f);color:#EEF0F6}
+#cb header small{color:#97A0B8;font:400 13px var(--f)}
+#cb header button{margin-left:auto;background:none;border:0;color:#97A0B8;font-size:24px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:8px}
+#cb header button:hover{color:#EEF0F6;background:rgba(255,255,255,.06)}
+#cb-log{flex:1;overflow-y:auto;padding:16px 16px 6px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.cb-m{max-width:86%;padding:10px 14px;border-radius:16px;font:400 15px/1.5 var(--f);animation:cbIn .3s ease}
+.cb-m.bot{align-self:flex-start;background:#16223F;color:#DDE1EC;border-bottom-left-radius:5px}
+.cb-m.me{align-self:flex-end;background:linear-gradient(120deg,#E3466E,#FC8961);color:#fff;border-bottom-right-radius:5px}
+.cb-m a{color:#FEB078}
+.cb-m ul{margin:6px 0 0;padding-left:18px}.cb-m li{margin:2px 0}
+.cb-typing{align-self:flex-start;background:#16223F;border-radius:16px;padding:12px 14px;display:flex;gap:4px}
+.cb-typing i{width:6px;height:6px;border-radius:50%;background:#97A0B8;animation:cbDot 1s infinite}
+.cb-typing i:nth-child(2){animation-delay:.15s}.cb-typing i:nth-child(3){animation-delay:.3s}
+@keyframes cbDot{50%{transform:translateY(-4px);opacity:.5}}
+@keyframes cbIn{from{opacity:0;transform:translateY(6px)}}
+#cb-chips{display:flex;flex-wrap:wrap;gap:6px;max-height:78px;overflow-y:auto;padding:8px 14px 10px;scrollbar-width:none}
+#cb-chips::-webkit-scrollbar{display:none}
+#cb-chips button{flex:none;font:500 13px var(--f);color:#DDE1EC;background:transparent;border:1px solid rgba(238,240,246,.18);border-radius:99px;padding:7px 12px;cursor:pointer;white-space:nowrap}
+#cb-chips button:hover{border-color:#FEB078;color:#FEB078}
+#cb form{display:flex;gap:8px;padding:10px 12px 14px;border-top:1px solid rgba(238,240,246,.1)}
+#cb input{flex:1;background:#09101F;border:1px solid rgba(238,240,246,.14);border-radius:99px;padding:11px 16px;color:#EEF0F6;font:400 15px var(--f);outline:none}
+#cb input:focus{border-color:#FC8961}
+#cb form button{width:44px;height:44px;border-radius:50%;border:0;background:#FEB078;cursor:pointer;display:grid;place-items:center;flex:none}
+#cb form button svg{width:18px;height:18px}
+@media (max-width:600px){#cb{right:12px;left:12px;width:auto;bottom:90px;height:min(70vh,560px)}#cb-btn{right:16px;bottom:16px}#cb-tip{display:none}}
+@media (prefers-reduced-motion:reduce){#cb,.cb-m,#cb-tip{transition:none;animation:none}.cb-typing i{animation:none}}
+</style>
+<div id="cb-tip" aria-hidden="true">Curious about my journey? Ask me 👋</div>
+<button id="cb-btn" type="button" aria-label="Open chat about Swetha's journey" aria-expanded="false" aria-controls="cb"><span><svg viewBox="0 0 24 24" fill="none" stroke="#FEB078" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg></span><i class="dot"></i></button>
+<section id="cb" role="dialog" aria-label="Chat about Swetha" hidden>
+  <header><div class="av" aria-hidden="true"></div><div><b>Ask about Swetha</b><small>Work, research and a little fun</small></div><button type="button" id="cb-x" aria-label="Close chat">×</button></header>
+  <div id="cb-log" aria-live="polite" data-lenis-prevent></div>
+  <div id="cb-chips" data-lenis-prevent></div>
+  <form id="cb-f" autocomplete="off"><input id="cb-in" placeholder="Ask about research, skills, music…" aria-label="Type a question"><button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="#09101F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+</section>
+<script>
+(()=>{
+const KB={
+ hi:{a:"Hi! I'm a small guide to Swetha's professional journey, plus a peek at what she enjoys outside the lab. Pick a topic below or type a question.",c:["Research","Journey","Skills","Projects","Outside work"]},
+ research:{k:/research|phd|tcad|surrogate|digital twin|stress|pinn|physics|photonic|semiconductor|quantiz|work on/,a:"Swetha builds machine learning for semiconductor and photonic devices:<ul><li><b>Digital twins:</b> neural surrogates trained on TCAD simulation data that predict mechanical stress in milliseconds instead of hours, roughly 3000× faster. She presented this at SPIE Photonics West 2026.</li><li><b>Hardware-aware deep learning:</b> quantizing networks to INT8/INT6 so they fit photonic and AI-accelerator hardware.</li><li><b>Next:</b> physics-informed neural networks and multi-physics models.</li></ul>",c:["Skills","Journey","Talks"],go:"research"},
+ journey:{k:/journey|experience|career|job|work history|background|optum|liteseeker|ibm|ugam|cisco|intern|role/,a:"Her path in short:<ul><li><b>2021</b> Cisco thingQbator, Project Associate</li><li><b>2022</b> Ugam (image captioning, published paper) and IBM (deep-learning web app)</li><li><b>2024</b> ML Engineer at Optum: clinical NLP and RAG chatbots</li><li><b>2024–26</b> MS in Applied Data Science at UF, plus research at the Florida Semiconductor Institute</li><li><b>2025–26</b> ML Engineer at LiteSeeker: predictive maintenance</li><li><b>2026–</b> PhD in ECE at UF, Sorger Photonics Group</li></ul>",c:["Research","Education","Skills"],go:"experience"},
+ skills:{k:/skill|stack|tool|language|python|pytorch|jax|tensorflow|know|tech/,a:"<b>ML and data:</b> Python, PyTorch, JAX, TensorFlow, scikit-learn, XGBoost, Hugging Face, FAISS, Spark, SQL.<br><b>Methods:</b> surrogate modeling, uncertainty quantification, quantization (INT8/INT6), physics-informed ML, RAG and LoRA fine-tuning.<br><b>Simulation:</b> TCAD/FLOOPS.",c:["Projects","Research","Outside work"]},
+ projects:{k:/project|built|github|portfolio|nutriscan|summari|pest|mnist|digit|enron|career assistant/,a:"A few favorites:<ul><li><b>NutriScanAI:</b> scans food labels and explains whether they're vegetarian (95% accuracy)</li><li><b>Handwritten digits:</b> classical models vs. a tuned network (99% accuracy)</li><li><b>Paper summarizer:</b> GPT-4 + FAISS for faster literature review</li><li><b>Pest detection app</b> for paddy farmers (95% accuracy)</li></ul><a href=\"https://github.com/swetha-gn\">See everything on GitHub</a>",c:["Skills","Outside work","Contact"],go:"projects"},
+ education:{k:/educat|degree|study|studied|school|college|university|masters|master's|ms |btech|uf\b|florida/,a:"<ul><li><b>PhD, Electrical &amp; Computer Engineering</b>, University of Florida (2026–)</li><li><b>MS, Applied Data Science</b>, University of Florida (May 2026)</li><li><b>BTech, Computer Science &amp; Engineering</b>, PSG College of Technology</li></ul>",c:["Research","Journey"]},
+ talks:{k:/talk|present|conference|spie|paper|publication|publish/,a:"<ul><li><b>SPIE Photonics West 2026</b>, San Francisco: neural digital twins for stress prediction</li><li><b>ICHPIC 2022</b>: her published paper on image caption generation</li></ul>",c:["Research","Contact"]},
+ fun:{k:/outside|hobb|fun|free time|weekend|interest|personal side|besides work|after work/,a:"Outside work she's a genuinely fun person to be around. Her favorite ways to unwind are <b>Carnatic music</b>, playing the <b>violin</b>, and <b>making content</b> just for the joy of it. Pick one!",c:["Carnatic music","Violin","Content creator"]},
+ carnatic:{k:/carnatic|classical|raga|tala|music|sing/,a:"Carnatic music is the classical music of South India, built on <b>ragas</b> (melodic frameworks) and <b>talas</b> (rhythmic cycles). It's one of Swetha's favorite things. Some say all those patterns are good training for an ML brain 🎶",c:["Violin","Content creator","Research"]},
+ violin:{k:/violin|instrument|play/,a:"Swetha plays the violin 🎻. Fun fact: in Carnatic music the violin is usually played sitting down, with the scroll resting near the player's foot. It's a very different posture from Western classical violin.",c:["Carnatic music","Content creator","Skills"]},
+ content:{k:/content|creator|instagram|reel|video|social|youtube/,a:"She makes content for fun: creative, lighthearted posts in her spare time. It's strictly a hobby, not a pro gig, and a nice creative outlet next to research 🎬",c:["Carnatic music","Violin","Contact"]},
+ contact:{k:/contact|email|reach|linkedin|hire|connect|collab|available|open to/,a:"She's open to roles and collaborations where ML meets systems, performance and physical reality.<br>Email: <a href=\"mailto:sgendlurnagaraja@ufl.edu\">sgendlurnagaraja@ufl.edu</a><br><a href=\"https://www.linkedin.com/in/swe-gn/\">LinkedIn</a> · <a href=\"https://github.com/swetha-gn\">GitHub</a>",c:["Research","Projects"],go:"contact"},
+ private:{k:/\b(age|how old|birthday|born|married|husband|boyfriend|family|parents|address|where (do|does) (she|you) live|phone|salary|religion|relationship)\b/,a:"That's a bit personal, so I'll leave it out 🙂 I'm happy to talk about her work, research, skills or hobbies.",c:["Research","Outside work"]},
+ thanks:{k:/thank|thx|cool|great|awesome|nice/,a:"Glad that helped! Anything else you'd like to know?",c:["Research","Outside work","Contact"]},
+ hello:{k:/^(hi|hey|hello|yo|hola|namaste|vanakkam)\b/,a:"Hello! 👋 What would you like to know about Swetha?",c:["Research","Journey","Outside work"]}
+};
+const CHIP={"Research":"research","Journey":"journey","Skills":"skills","Projects":"projects","Education":"education","Talks":"talks","Outside work":"fun","Carnatic music":"carnatic","Violin":"violin","Content creator":"content","Contact":"contact"};
+const ORDER=["private","thanks","hello","carnatic","violin","content","fun","talks","research","projects","skills","education","journey","contact"];
+const btn=document.getElementById("cb-btn"),box=document.getElementById("cb"),log=document.getElementById("cb-log"),chips=document.getElementById("cb-chips"),f=document.getElementById("cb-f"),inp=document.getElementById("cb-in"),tip=document.getElementById("cb-tip");
+const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+let started=false;
+function add(html,who){const d=document.createElement("div");d.className="cb-m "+who;if(who==="me")d.textContent=html;else d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight;}
+function setChips(list){chips.innerHTML="";(list||Object.keys(CHIP)).forEach(n=>{const b=document.createElement("button");b.type="button";b.textContent=n;b.onclick=()=>ask(n,CHIP[n]);chips.appendChild(b);});}
+function reply(key){const e=KB[key];const t=document.createElement("div");t.className="cb-typing";t.innerHTML="<i></i><i></i><i></i>";log.appendChild(t);log.scrollTop=log.scrollHeight;
+  setTimeout(()=>{t.remove();add(e.a,"bot");setChips(e.c.concat(Object.keys(CHIP).filter(n=>!e.c.includes(n))));},rm?0:550);}
+function match(q){q=q.toLowerCase().trim();for(const k of ORDER){if(KB[k].k&&KB[k].k.test(q))return k;}return null;}
+function ask(text,key){add(text,"me");key=key||match(text);
+  if(!key){const t=document.createElement("div");t.className="cb-typing";t.innerHTML="<i></i><i></i><i></i>";log.appendChild(t);
+    setTimeout(()=>{t.remove();add("I only know about Swetha's work, research and a few hobbies. Try one of these:","bot");setChips(["Research","Journey","Skills","Projects","Outside work","Contact"]);},rm?0:500);return;}
+  reply(key);}
+function open(o){box.hidden=!o;btn.setAttribute("aria-expanded",String(o));tip.classList.remove("show");
+  if(o){if(!started){started=true;add(KB.hi.a,"bot");setChips(KB.hi.c.concat(["Carnatic music","Violin","Content creator","Education","Talks","Contact"]));}setTimeout(()=>inp.focus(),50);}else btn.focus();}
+btn.onclick=()=>open(box.hidden);
+document.getElementById("cb-x").onclick=()=>open(false);
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!box.hidden)open(false);});
+f.onsubmit=e=>{e.preventDefault();const q=inp.value.trim();if(!q)return;inp.value="";ask(q);};
+setTimeout(()=>{if(box.hidden&&!started){tip.classList.add("show");setTimeout(()=>tip.classList.remove("show"),6000);}},4500);
+})();
+</script>
 </body>
 </html>
